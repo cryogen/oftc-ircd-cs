@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace oftc_ircd_cs
 {
-  public class ListenerSection : ConfigSection
+  public class ListenerSection : IConfigSection
   {
     #region ConfigSection Members
 
@@ -15,7 +13,7 @@ namespace oftc_ircd_cs
 
     public void Process(object o)
     {
-      List<object> section = o as List<object>;
+      var section = o as List<object>;
 
       if (section == null)
         throw new Exception("config section was not an array as expected");

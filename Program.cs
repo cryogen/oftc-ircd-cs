@@ -1,35 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 
 namespace oftc_ircd_cs
 {
-  class Program
-  {
-    public static ManualResetEvent allDone = new ManualResetEvent(false);
-
-    static void Main(string[] args)
+    internal class Program
     {
-      General.Init();
-      Listener.Init();
-      Logging.Init();
-      Module.Init();
-      Config.Load();
+        public static ManualResetEvent AllDone = new ManualResetEvent(false);
 
-      Numeric.LoadMessages(General.Conf.MessagesFile);
-      BaseClient.Init();
-      Logging.Start();
+        private static void Main()
+        {
+            General.Init();
+            Listener.Init();
+            Logging.Init();
+            Module.Init();
+            Config.Load();
 
-      Logging.Info("oftc-ircd-cs starting up");
+            Numeric.LoadMessages(General.Conf.MessagesFile);
+            BaseClient.Init();
+            Logging.Start();
 
-      Module.LoadAll();
-      Listener.StartListeners();
+            Logging.Info("oftc-ircd-cs starting up");
 
-      while (true)
-      {
-      }
+            Module.LoadAll();
+            Listener.StartListeners();
+
+            while (true)
+            {
+            }
+        }
     }
-  }
 }

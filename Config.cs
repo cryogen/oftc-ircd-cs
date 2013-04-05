@@ -1,51 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using fastJSON;
 using System.IO;
+using fastJSON;
 
 namespace oftc_ircd_cs
 {
-  [Serializable]
-  public class Config
-  {
-    private static Dictionary<string, ConfigSection> configSections = new Dictionary<string, ConfigSection>();
-
-    public static void Load()
+    [Serializable]
+    public class Config
     {
-      string json;
+        private static readonly Dictionary<string, IConfigSection> ConfigSections =
+                    new Dictionary<string, IConfigSection>();
 
-      foreach (ConfigSection section in configSections.Values)
-      {
-        section.SetDefaults();
-      }
+        public static void Load()
+        {
+            string json;
 
-      using(TextReader reader = File.OpenText("ircd.conf"))
-      {
-        json = reader.ReadToEnd();
-      }
+            foreach (var section in ConfigSections.Values)
+            {
+                section.SetDefaults();
+            }
 
-      var tmp = JSON.Instance.Parse(json);
-      Dictionary<string, object> root = tmp as Dictionary<string, object>;
+            using (TextReader reader = File.OpenText("ircd.conf"))
+            {
+                json = reader.ReadToEnd();
+            }
 
-      if (root == null)
-        throw new Exception("Config root is not an object");
+            var tmp = JSON.Instance.Parse(json);
+            var root = tmp as Dictionary<string, object>;
 
-      foreach (var element in root)
-      {
-        ConfigSection section;
+            if (root == null)
+                throw new Exception("Config root is not an object");
 
-        if (!configSections.TryGetValue(element.Key, out section))
-          continue;
+            foreach (var element in root)
+            {
+                IConfigSection section;
 
-        section.Process(element.Value);
-      }
+                if (!ConfigSections.TryGetValue(element.Key, out section))
+                    continue;
+
+                section.Process(element.Value);
+            }
+        }
+
+        public static void AddSection(string name, IConfigSection section)
+        {
+            ConfigSections.Add(name, section);
+        }
     }
-
-    public static void AddSection(string name, ConfigSection section)
-    {
-      configSections.Add(name, section);
-    }
-  }
 }

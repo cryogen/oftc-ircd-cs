@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace oftc_ircd_cs
 {
-  public class Server : BaseClient
-  {
-    public static Server Me { get; set; }
-    public static List<Server> servers = new List<Server>();
+    public class Server : BaseClient
+    {
+        public static List<Server> Servers = new List<Server>();
+        public static Server Me { get; set; }
 
-    public string Info { get; set; }
-  }
+        public string Info { get; set; }
+    }
 }
