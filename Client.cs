@@ -12,6 +12,13 @@ namespace oftc_ircd_cs
 
     private static List<Client> clients = new List<Client>();
 
+    public void numeric(int numeric, params object[] args)
+    {
+      string num = (string)Numeric.Messages[numeric.ToString("D3")];
+
+      send(String.Format(":{0} {1:D3} {2} {3}", Server.Me, numeric, String.IsNullOrEmpty(Name) ? "*" : Name, String.Format(num, args)));
+    }
+
     public override string ToString()
     {
       if (String.IsNullOrEmpty(Name))
@@ -25,6 +32,8 @@ namespace oftc_ircd_cs
       BaseClient.RemoveUnregistered(client);
       client.Level = AccessLevel.Registered;
       clients.Add(client);
+
+      client.numeric(001, client.ToString());
     }
   }
 }

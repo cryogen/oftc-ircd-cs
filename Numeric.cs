@@ -9,7 +9,7 @@ namespace oftc_ircd_cs
 {
   public class Numeric
   {
-    private static Dictionary<string, object> messages;
+    public static Dictionary<string, object> Messages { get; private set; }
 
     public static void LoadMessages(string path)
     {
@@ -20,7 +20,7 @@ namespace oftc_ircd_cs
         json = reader.ReadToEnd();
       }
 
-      messages = (Dictionary<string, object>)((Dictionary<string, object>)JSON.Instance.Parse(json)).Values.First();
+      Messages = (Dictionary<string, object>)((Dictionary<string, object>)JSON.Instance.Parse(json)).Values.First();
     }
   }
 }

@@ -45,7 +45,9 @@ namespace oftc_ircd_cs
       {
         if (client.is_registered() && client is Client)
         {
-          // numeric
+          Client c = client as Client;
+
+          c.numeric(421, commandArg);
         }
         return;
       }
